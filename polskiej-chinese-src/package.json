@@ -1,0 +1,50 @@
+{
+  "name": "polish-chiny",
+  "productName": "polish-chiny",
+  "description": "中文 → 波兰语 智能翻译质量审核桌面工具",
+  "private": true,
+  "version": "2.1.0",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "rebuild": "cd node_modules/better-sqlite3 && HOME=~/.electron-gyp ../../.bin/node-gyp rebuild --target=41.2.1 --runtime=electron --dist-url=https://electronjs.org/headers --arch=arm64",
+    "dist": "electron-builder --mac --dir"
+  },
+  "build": {
+    "appId": "com.wangyijun.polish-chiny",
+    "productName": "polish-chiny",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "build/icon.icns",
+      "target": [{ "target": "dir", "arch": ["arm64"] }]
+    },
+    "files": [
+      "dist-electron/**/*",
+      "dist/**/*",
+      "build/icon.icns",
+      "node_modules/**/*",
+      "!node_modules/electron/**",
+      "!node_modules/electron-builder/**",
+      "!node_modules/@electron/rebuild/**"
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "asar": false
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.9.0",
+    "electron-store": "^11.0.2",
+    "mammoth": "^1.11.0",
+    "p-queue": "^9.1.2",
+    "pdf-parse": "^2.4.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sqlite3": "^5.1.7",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^3.7.2",
+    "electron": "^41.2.1",
+    "electron-builder": "^25.1.8"
+  }
+}

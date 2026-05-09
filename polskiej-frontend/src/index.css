@@ -1,0 +1,200 @@
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Microsoft YaHei",
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+
+  --bg: #f5f5f7;
+  --surface: #f5f5f7;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f2f4f6;
+  --surface-container: #e8ebef;
+  --surface-container-high: #dde1e6;
+
+  --primary: #5f5e60;
+  --tertiary: #005dbb;
+  --tertiary-dim: #0051a5;
+
+  --on-surface: #1d1d1f;
+  --on-surface-variant: #515154;
+  --outline-variant: #c7c7cc;
+  --outline: #8e8e93;
+
+  --error: #9f403d;
+  --error-container: #fe8983;
+  --success: #005dbb;
+
+  --radius: 0.25rem;
+  --radius-lg: 0.5rem;
+
+  font-family: var(--font-sans);
+  color: var(--on-surface);
+  background: var(--bg);
+  font-feature-settings: "kern" 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── B1: 深色模式 ─────────────────────────────────────────── */
+:root[data-theme="dark"] {
+  --bg: #1c1c1e;
+  --surface: #1c1c1e;
+  --surface-container-lowest: #2c2c2e;
+  --surface-container-low: #3a3a3c;
+  --surface-container: #48484a;
+  --surface-container-high: #545456;
+
+  --primary: #a0a0a8;
+  --tertiary: #3e8fe8;
+  --tertiary-dim: #2d7bd0;
+
+  --on-surface: #f5f5f7;
+  --on-surface-variant: #a1a1a6;
+  --outline-variant: #48484a;
+  --outline: #6d6d72;
+
+  --error: #e06060;
+  --error-container: #7f2020;
+  --success: #3e8fe8;
+}
+
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; }
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+button { cursor: pointer; font-family: inherit; }
+input, textarea { font-family: inherit; }
+
+/* ── App Shell Layout ──────────────────────────────────── */
+.app-shell { display: flex; height: 100vh; overflow: hidden; background: var(--bg); }
+
+.sidebar {
+  position: fixed; left: 0; top: 0; height: 100%; width: 256px;
+  background: var(--surface-container-low);
+  border-right: 1px solid transparent;
+  display: flex; flex-direction: column; padding: 44px 24px 24px;
+  color: var(--on-surface-variant); z-index: 50;
+  transition: width 0.25s cubic-bezier(0.4,0,0.2,1), padding 0.25s;
+  overflow: hidden;
+}
+.sidebar.collapsed { width: 0; padding: 24px 0; }
+.sidebar.collapsed .sidebar-header,
+.sidebar.collapsed .nav-list,
+.sidebar.collapsed .sidebar-footer { opacity: 0; pointer-events: none; transition: opacity 0.15s; }
+.sidebar-toggle {
+  position: fixed; bottom: 24px; left: 208px;
+  width: 32px; height: 32px; z-index: 60; cursor: pointer;
+  background: var(--surface-container); border: 1px solid var(--outline-variant); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--on-surface-variant);
+  transition: left 0.25s cubic-bezier(0.4,0,0.2,1), background 0.15s, box-shadow 0.15s;
+}
+.sidebar-toggle:hover { background: var(--surface-container-high); color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.sidebar-toggle.collapsed { left: 24px; }
+.sidebar-header { margin-bottom: 48px; }
+.sidebar-header h1 { font-size: 1.125rem; font-weight: 700; color: var(--primary); }
+.sidebar-header p { font-size: 0.875rem; letter-spacing: -0.02em; color: var(--on-surface-variant); }
+
+.nav-list { display: flex; flex-direction: column; gap: 8px; list-style: none; }
+.nav-item {
+  display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+  border-radius: var(--radius); color: var(--on-surface-variant);
+  font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: all 0.2s;
+}
+.nav-item:hover { background: var(--surface-container); }
+.nav-item.active { color: var(--tertiary); font-weight: 600; background: rgba(0,93,187,0.08); border-radius: 8px; }
+
+.sidebar-footer { margin-top: auto; display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--outline-variant); }
+.user-info { display: flex; flex-direction: column; font-size: 0.875rem; font-weight: 500; color: var(--on-surface); }
+
+/* ── Top Header ────────────────────────────────────────── */
+.topbar {
+  position: fixed; top: 0; right: 0; left: 256px; height: 64px;
+  background: var(--surface-container-low); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  display: flex; justify-content: space-between; align-items: center; padding: 0 32px; z-index: 40;
+  transition: left 0.25s cubic-bezier(0.4,0,0.2,1), padding-left 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.topbar.sidebar-collapsed { left: 0; padding-left: 64px; }
+.drag-region { -webkit-app-region: drag; }
+.no-drag { -webkit-app-region: no-drag; }
+
+.topbar-left { display: flex; align-items: center; gap: 32px; }
+.topbar-left h2 { font-size: 1.25rem; font-weight: 900; color: var(--primary); letter-spacing: -0.02em; }
+.topbar-nav { display: flex; gap: 24px; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; color: var(--on-surface-variant); }
+.topbar-nav a { padding-bottom: 4px; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; }
+.topbar-nav a:hover { color: var(--primary); }
+.topbar-nav a.active { color: var(--tertiary); border-bottom-color: var(--tertiary); }
+
+.topbar-right { display: flex; align-items: center; gap: 24px; }
+.topbar-icons { display: flex; gap: 16px; color: var(--primary); }
+.topbar-icons button { background: transparent; border: none; color: inherit; transition: all 0.2s; }
+.topbar-icons button:hover { color: var(--on-surface); }
+.btn-export {
+  background: var(--tertiary); color: #faf7f9; padding: 8px 16px; border-radius: var(--radius);
+  font-size: 0.875rem; font-weight: 500; border: none; transition: background 0.2s;
+}
+.btn-export:hover { background: var(--tertiary-dim); }
+
+/* ── Main Canvas ───────────────────────────────────────── */
+.main-canvas {
+  position: fixed;
+  left: 256px;
+  top: 64px;
+  right: 0;
+  bottom: 32px;
+  overflow: hidden;
+  display: flex;
+  transition: left 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.main-canvas.sidebar-collapsed { left: 0; }
+
+/* 每个子视图自己管理滚动 */
+.main-canvas > * {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── Footer ────────────────────────────────────────────── */
+.app-footer {
+  position: fixed; bottom: 0; right: 0; left: 256px; height: 32px;
+  background: var(--surface-container-low); color: var(--on-surface-variant);
+  display: flex; justify-content: space-between; align-items: center; padding: 0 32px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase; z-index: 40;
+  transition: left 0.25s cubic-bezier(0.4,0,0.2,1), padding-left 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.app-footer.sidebar-collapsed { left: 0; padding-left: 64px; }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a:hover { text-decoration: underline; cursor: pointer; }
+
+/* ── Legacy Components / Overrides for React ───────────── */
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; color: var(--on-surface-variant); }
+.toast-container { position: fixed; bottom: 40px; right: 32px; display: flex; flex-direction: column; gap: 8px; z-index: 9999; }
+.toast { background: var(--surface-container-lowest); border: 1px solid var(--outline-variant); border-radius: var(--radius); padding: 12px 16px; font-size: 13px; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+
+/* Generic Buttons & Forms (fallback) */
+.btn { padding: 8px 16px; border-radius: var(--radius); font-size: 0.875rem; font-weight: 500; border: none; transition: all .15s; }
+.btn-primary { background: var(--tertiary); color: #faf7f9; }
+.btn-ghost { background: transparent; color: var(--on-surface); }
+.btn-ghost:hover { background: var(--surface-container); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--outline-variant); border-radius: 3px; }
+
+/* Pulse animation for generating indicator */
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
+
+@keyframes slideInDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

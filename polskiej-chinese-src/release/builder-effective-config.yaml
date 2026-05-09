@@ -1,0 +1,23 @@
+directories:
+  output: release
+  buildResources: build
+appId: com.wangyijun.polish-chiny
+productName: polish-chiny
+mac:
+  category: public.app-category.productivity
+  icon: build/icon.icns
+  target:
+    - target: dir
+      arch:
+        - arm64
+files:
+  - filter:
+      - dist-electron/**/*
+      - dist/**/*
+      - build/icon.icns
+      - node_modules/**/*
+      - '!node_modules/electron/**'
+      - '!node_modules/electron-builder/**'
+      - '!node_modules/@electron/rebuild/**'
+asar: false
+electronVersion: 41.2.1
